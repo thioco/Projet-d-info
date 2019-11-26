@@ -5,35 +5,45 @@
 #include <byteswap.h>
 #include <vector>
 #include <string>
+#include <tuple>
 
 #include "fasta_to_txt.h"
 #include "read_blast.h"
 
 #define LONG_MAX 50
 using namespace std;
+int* size_S; //taille de la séquence
 
-vector<int> find_exact_match_pin(const char* file_fasta,const char* file_blast){
+vector<tuple<int,int>> find_exact_match_pin(const char* file_fasta,const char* file_blast_pin){
 	char outpout[LONG_MAX];
 	sprintf(outpout,"%s.txt",file_fasta);
 	
-	int size_S;//taille de la séquence
-	size_S = translate(file_fasta,outpout);
-	cout << size_S << endl;
+	*size_S = translate(file_fasta,outpout);
+	cout << *size_S << endl;
 	
-	vector <int> i;
+	vector <tuple<int,int>> res;
 	
-	i=read_pin_seq(file_blast,size_S);
-	for (int j=0;j<i.size();j++)
-		cout << i[j] << endl;
-	return i;
+	res=read_pin_seq(file_blast_pin,*size_S);
+	for (int j=0;j<res.size();j++)
+		cout << get<0>(res[j]) << " " << get<1>(res[j]) << endl;
+		
+	return res;
+}
+
+int find_exact_match_psq(const char* file_fasta_txt,const char* file_blast_psq,vector<tuple<int,int>> same_size){
+	
 }
 
 int main(int argc, char **argv)
 {
-	if (argc != 3)
+	if (argc != 3){
 		cout << "Il faut 2 arguments" << endl;
-	else 
-		find_exact_match_pin(argv[1],argv[2]);
+		return 1;}
+	else{
+		size_S=new int;
+		vector<tuple<int,int>> res_size;
+		res_size=find_exact_match_pin(argv[1],argv[2]);
+	}
 	
 	return 0;
 }

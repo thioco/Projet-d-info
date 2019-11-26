@@ -167,7 +167,7 @@ int translate(const char* fasta,const char* outpout){
 	}
 	else
 		cout << "Rentrez un nom de fichier correct" << endl;
-		
+	N++;
 	return N;
 }
 	
