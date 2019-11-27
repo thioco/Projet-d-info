@@ -1,156 +1,250 @@
 #include <iostream>
 #include <cstdio>
 #include <cstring>
-
+#include <fstream>
 #include "fasta_to_txt.h"
+#include <vector>
 
 #define MAX_COMM 500
 using namespace std;
 
 /*<>*/
 
-void fct_case(const char* filename,char c){
-	FILE* fo;
+vector<int8_t> fct_case_vector(vector<int8_t> prot,char c){
+	
+	int8_t a;
 	switch(c) {
 		case 'A':
-			fo=fopen(filename,"a");
-			fputs("1 \n",fo);
-			fclose(fo);
+			a = 1;
+			prot.push_back(a);
 			break;
 		case 'B':
-			fo=fopen(filename,"a");
-			fputs("2 \n",fo);
-			fclose(fo);
+			a = 2;
+			prot.push_back(a);
 			break;
 		case 'C':
-			fo=fopen(filename,"a");
-			fputs("3 \n",fo);
-			fclose(fo);
+			a = 3;
+			prot.push_back(a);
 			break;
 		case 'D':
-			fo=fopen(filename,"a");
-			fputs("4 \n",fo);
-			fclose(fo);
+			a = 4;
+			prot.push_back(a);
 			break;
 		case 'E':
-			fo=fopen(filename,"a");
-			fputs("5 \n",fo);
-			fclose(fo);
+			a = 5;
+			prot.push_back(a);
 			break;
 		case 'F':
-			fo=fopen(filename,"a");
-			fputs("6 \n",fo);
-			fclose(fo);
+			a = 6;
+			prot.push_back(a);
 			break;
 		case 'G':
-			fo=fopen(filename,"a");
-			fputs("7 \n",fo);
-			fclose(fo);
+			a = 7;
+			prot.push_back(a);
 			break;
 		case 'H':
-			fo=fopen(filename,"a");
-			fputs("8 \n",fo);
-			fclose(fo);
+			a = 8;
+			prot.push_back(a);
 			break;
 		case 'I':
-			fo=fopen(filename,"a");
-			fputs("9 \n",fo);
-			fclose(fo);
+			a = 9;
+			prot.push_back(a);
 			break;
 		case 'J':
-			fo=fopen(filename,"a");
-			fputs("27 \n",fo);
-			fclose(fo);
+			a = 27;
+			prot.push_back(a);
 			break;
 		case 'K':
-			fo=fopen(filename,"a");
-			fputs("10 \n",fo);
-			fclose(fo);
+			a = 10;
+			prot.push_back(a);
 			break;
 		case 'L':
-			fo=fopen(filename,"a");
-			fputs("11 \n",fo);
-			fclose(fo);
+			a = 11;
+			prot.push_back(a);
 			break;
 		case 'M':
-			fo=fopen(filename,"a");
-			fputs("12 \n",fo);
-			fclose(fo);
+			a = 12;
+			prot.push_back(a);
 			break;
 		case 'N':
-			fo=fopen(filename,"a");
-			fputs("13 \n",fo);
-			fclose(fo);
+			a = 13;
+			prot.push_back(a);
 			break;
 		case 'O':
-			fo=fopen(filename,"a");
-			fputs("26 \n",fo);
-			fclose(fo);
+			a = 26;
+			prot.push_back(a);
 			break;
 		case 'P':
-			fo=fopen(filename,"a");
-			fputs("14 \n",fo);
-			fclose(fo);
+			a = 14;
+			prot.push_back(a);
 			break;
 		case 'Q':
-			fo=fopen(filename,"a");
-			fputs("15 \n",fo);
-			fclose(fo);
+			a = 15;
+			prot.push_back(a);
 			break;
 		case 'R':
-			fo=fopen(filename,"a");
-			fputs("16 \n",fo);
-			fclose(fo);
+			a = 16;
+			prot.push_back(a);
 			break;
 		case 'S':
-			fo=fopen(filename,"a");
-			fputs("17 \n",fo);
-			fclose(fo);
+			a = 17;
+			prot.push_back(a);
 			break;
 		case 'T':
-			fo=fopen(filename,"a");
-			fputs("18 \n",fo);
-			fclose(fo);
+			a = 18;
+			prot.push_back(a);
 			break;
 		case 'U':
-			fo=fopen(filename,"a");
-			fputs("24 \n",fo);
-			fclose(fo);
+			a = 24;
+			prot.push_back(a);
 			break;
 		case 'V':
-			fo=fopen(filename,"a");
-			fputs("19 \n",fo);
-			fclose(fo);
+			a = 19;
+			prot.push_back(a);
 			break;
 		case 'W':
-			fo=fopen(filename,"a");
-			fputs("20 \n",fo);
-			fclose(fo);
+			a = 20;
+			prot.push_back(a);
 			break;
 		case 'X':
-			fo=fopen(filename,"a");
-			fputs("21 \n",fo);
-			fclose(fo);
+			a = 21;
+			prot.push_back(a);
 			break;
 		case 'Y':
-			fo=fopen(filename,"a");
-			fputs("22 \n",fo);
-			fclose(fo);
+			a = 22;
+			prot.push_back(a);
 			break;
 		case 'Z':
-			fo=fopen(filename,"a");
-			fputs("23 \n",fo);
-			fclose(fo);
+			a = 23;
+			prot.push_back(a);
 			break;
 	}
+	return prot;
+	
 }
 
-int translate(const char* fasta,const char* outpout){
+void fct_case(const char* filename,char c){
+	ofstream fo(filename,ios::out | ios::binary);
+	int8_t a;
+	if(fo.is_open())
+	{
+		
+	}
+	switch(c) {
+		case 'A':
+			a = 1;
+			fo.write(reinterpret_cast<const char*>(&a), sizeof(int));
+			
+			break;
+		case 'B':
+			a = 2;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'C':
+			a = 3;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'D':
+			a = 4;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'E':
+			a = 5;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'F':
+			a = 6;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'G':
+			a = 7;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'H':
+			a = 8;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'I':
+			a = 9;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'J':
+			a = 27;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'K':
+			a = 10;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'L':
+			a = 11;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'M':
+			a = 12;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'N':
+			a = 13;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'O':
+			a = 26;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'P':
+			a = 14;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'Q':
+			a = 15;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'R':
+			a = 16;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'S':
+			a = 17;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'T':
+			a = 18;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'U':
+			a = 24;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'V':
+			a = 19;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'W':
+			a = 20;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'X':
+			a = 21;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'Y':
+			a = 22;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+		case 'Z':
+			a = 23;
+			fo.write((char *)&a, sizeof(int8_t));
+			break;
+	}
+	fo.close();
+}
+
+vector<int8_t> translate(const char* fasta,const char* outpout){
 	FILE* f=fopen(fasta,"r");
-	FILE* fo=fopen(outpout,"w+"); /*pour réinitialiser le fichier si celui-ci existe déjà*/
-	fclose(fo);
-	
-	int N=0; //Taille de la séquence
+	//FILE* fo=fopen(outpout,"w+"); /*pour réinitialiser le fichier si celui-ci existe déjà*/
+	//fclose(fo);
+	vector<int8_t> protein;
 	
 	if (f != NULL) {
 	
@@ -159,16 +253,15 @@ int translate(const char* fasta,const char* outpout){
 		fgets(poubelle,MAX_COMM,f);
 
 		for (c=getc(f);c!=EOF;c=getc(f)){
-			fct_case(outpout,c);
-			if ( c != '\n')
-				N++;
+			protein = fct_case_vector(protein,c);
 		}
 		fclose(f);
 	}
 	else
 		cout << "Rentrez un nom de fichier correct" << endl;
-	N++;
-	return N;
+	cout<<protein.size()<<endl;
+	protein.push_back(0);
+	return protein;
 }
 	
 	

@@ -12,38 +12,73 @@
 
 #define LONG_MAX 50
 using namespace std;
-int* size_S; //taille de la séquence
+vector<int8_t> sequence; //taille de la séquence
 
 vector<tuple<int,int>> find_exact_match_pin(const char* file_fasta,const char* file_blast_pin){
 	char outpout[LONG_MAX];
-	sprintf(outpout,"%s.txt",file_fasta);
+	sprintf(outpout,"%s.psq",file_fasta);
 	
-	*size_S = translate(file_fasta,outpout);
-	cout << *size_S << endl;
+	sequence = translate(file_fasta,outpout);
+	cout << sequence.size() << endl;
 	
 	vector <tuple<int,int>> res;
 	
-	res=read_pin_seq(file_blast_pin,*size_S);
+	res=read_pin_seq(file_blast_pin,sequence.size());
 	for (int j=0;j<res.size();j++)
 		cout << get<0>(res[j]) << " " << get<1>(res[j]) << endl;
 		
 	return res;
 }
 
-int find_exact_match_psq(const char* file_fasta_txt,const char* file_blast_psq,vector<tuple<int,int>> same_size){
-	
+int find_exact_match_psq(vector<int8_t> sequence,const char* file_blast_psq,vector<tuple<int,int>> same_size){
+	int compteur;
+	int8_t protein;
+	int8_t protein_blast;
+	ifstream blast(file_blast_psq,ios::binary);
+	if( blast.is_open() )
+	{
+		for(int i=0;i<same_size.size();i++)
+		{
+			protein = 0;
+			protein_blast = 0;
+			compteur = 0;
+			blast.seekg(get<1>(same_size[i]));
+			
+			while(protein == protein_blast)
+			{
+				cout<< "checking while"<<endl;
+				if(compteur==sequence.size())
+				{
+					return get<0>(same_size[i]);
+				}
+				blast.read((char *) (&protein_blast), sizeof(protein_blast));
+				protein = sequence[compteur];
+				cout<<"protein = "<<protein<< endl;
+				compteur++;
+			}
+		}
+		blast.close();
+		
+	}
+	else
+		cout<< "fichier ne s'ouvre pas" <<endl;
+	return -1;
 }
 
 int main(int argc, char **argv)
 {
+	int test;
 	if (argc != 3){
 		cout << "Il faut 2 arguments" << endl;
 		return 1;}
 	else{
-		size_S=new int;
+		
 		vector<tuple<int,int>> res_size;
+		cout<<"hello"<<endl;
 		res_size=find_exact_match_pin(argv[1],argv[2]);
-	}
+		test = find_exact_match_psq(sequence, "uniprot_sprot.fasta.psq", res_size);
+		cout<< test<<endl;
+	}	
 	
 	return 0;
 }
