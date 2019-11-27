@@ -46,14 +46,13 @@ int find_exact_match_psq(vector<int8_t> sequence,const char* file_blast_psq,vect
 			
 			while(protein == protein_blast)
 			{
-				cout<< "checking while"<<endl;
 				if(compteur==sequence.size())
 				{
 					return get<0>(same_size[i]);
 				}
 				blast.read((char *) (&protein_blast), sizeof(protein_blast));
 				protein = sequence[compteur];
-				cout<<"protein = "<<protein<< endl;
+				cout<<"protein = "<<(int) protein << " blast " << (int) protein_blast<< endl;
 				compteur++;
 			}
 		}
@@ -65,6 +64,26 @@ int find_exact_match_psq(vector<int8_t> sequence,const char* file_blast_psq,vect
 	return -1;
 }
 
+void find_exact_match_phr(const char* filename,int header_offset){
+	ifstream f(filename,ios::binary |ios::out);
+
+	f.seekg(header_offset);
+	
+	f.ignore(7*sizeof(char));
+	uint8_t n;
+	
+	f.read((char*) &n,sizeof(n));
+	
+	char a[(uint)n];
+	f.read(a,sizeof(a));
+	a[(uint)n]=0;
+	
+	cout << a << endl;
+
+	f.close();
+}
+
+
 int main(int argc, char **argv)
 {
 	int test;
@@ -74,10 +93,12 @@ int main(int argc, char **argv)
 	else{
 		
 		vector<tuple<int,int>> res_size;
-		cout<<"hello"<<endl;
 		res_size=find_exact_match_pin(argv[1],argv[2]);
 		test = find_exact_match_psq(sequence, "uniprot_sprot.fasta.psq", res_size);
+		if ( test == -1)
+			cout << "Aucun match n'a été trouvé, vérifiez votre protéine" << endl;
 		cout<< test<<endl;
+		find_exact_match_phr("uniprot_sprot.fasta.phr",test);
 	}	
 	
 	return 0;

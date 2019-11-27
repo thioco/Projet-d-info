@@ -35,7 +35,7 @@ vector<tuple<int,int>> read_pin_seq(const char* file_blast, int n){
 		
 		in.read((char *) (&x), sizeof(x) );
 		lengthdata =  bswap_32((int32_t) x );
-		cout<< debut<<endl;
+
 		debut+= 16;
 		in.ignore(20);
 		in.read((char *) (&x), sizeof(x) );

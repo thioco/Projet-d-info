@@ -259,7 +259,6 @@ vector<int8_t> translate(const char* fasta,const char* outpout){
 	}
 	else
 		cout << "Rentrez un nom de fichier correct" << endl;
-	cout<<protein.size()<<endl;
 	protein.push_back(0);
 	return protein;
 }
