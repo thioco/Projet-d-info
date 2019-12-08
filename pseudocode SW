@@ -1,0 +1,52 @@
+#Pseudo-code
+
+#H[i,j] : matrice de score pour une séquence de database
+#D(A[i],B[j]) : matrice BLOSUM qui contient les scores selon les ressemblances
+#DELTA : score perdue lors d'un gap
+#A[i] : tableau de la séquence a
+#B[j] : tableau de la séquence b database
+
+function smith_walterman(D)
+	H[n,m] #Initialisation de la matrice de longueur n et largeur m (n=longueur de la séquence fasta et m=longueur de la séquence database)
+	best_score = 0 #Pour ne pas devoir refaire une recherche par après
+	x,y #Les coordonnées du meilleur score
+	for i=1 to n do #On regarde les lignes une par une
+		for j=1 to n do #on regarde toutes les colonnes pour une ligne
+			if (i-1 != 0 || j-1 !=0) then
+				H[i;j] = max(0,H[i-1,j-1] + D(A[i],B[j]),H[i-1,j] - DELTA, H[i,j-1] - DELTA)
+			else if (i-1 == O) then
+				H[i;j] = max(0,D(A[i],B[j]),- DELTA, H[i,j-1] - DELTA)
+			else if (j-1 == 0) then
+				H[i;j] = max(0,D(A[i],B[j]),H[i-1,j] - DELTA,- DELTA)
+			endif
+			
+			if (best_score < score) then
+				best_score = score
+				x,y = i,j
+			endif
+		endfor
+	endfor
+	return H,best_score,x,y #en réalité best_score,x et y seront une structure de données ou une classe --> pointeur
+endfunction
+
+function find_path(x,y)
+	score = H[x,y]
+
+	if(H[x,y] == H[x-1,y-1] + D(A[x],B[y])) then
+		x -= 1
+		y -= 1
+	else if (H[x,y] == H[x-1,y] - DELTA) then
+		x -= 1
+	else if (H[x,y] == H[x,y-1] - DELTA) then
+		y -= 1
+	endif
+	
+	if(H[x,y] == 0) then
+		return score
+	else then
+		score += find_path(x,y)
+	endif
+	
+	return score
+endfunction
+
