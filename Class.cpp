@@ -14,7 +14,8 @@ const char* name;
 public:
 Fichier(const char* fichier = 0)
 {
-	name = fichier;
+	name = fichier; // risque de pas marcher
+	strcpy(name,fichier);
 }
 const char* getname()
 {
@@ -31,7 +32,7 @@ public:
 	{
 		sprintf(name,"%s.phr",fichier);
 	}
-	const char* getname()
+	const char* getname() //voir.h
 	{
 		return name;
 }
@@ -68,7 +69,7 @@ public:
 		}
 	}
 	
-	const char* getname()
+	const char* getname()//voir.h
 	{
 		return name;
 	}
@@ -107,7 +108,7 @@ Fichier_sequence(char fichier = 0)
 	sprintf(name,"%s.psq",fichier);
 }
 
-const char* getname()
+const char* getname()//voir.h
 {
 	return name;
 }
@@ -124,25 +125,25 @@ public:
 		FILE* f=fopen(fasta,"r");
 
 	
+	//identation lol
+		if (f != NULL) {
 	
-	if (f != NULL) {
-	
-		char c; /*Un seul caractère = un seul acide aminé*/
-		char poubelle[500]="";
-		fgets(poubelle,500,f);
+			char c; /*Un seul caractère = un seul acide aminé*/
+			char poubelle[500]="";
+			fgets(poubelle,500,f);
 
-		for (c=getc(f);c!=EOF;c=getc(f)){
-			sequence = fct_case_vector(sequence,c);
+			for (c=getc(f);c!=EOF;c=getc(f)){
+				sequence = fct_case_vector(sequence,c);
+			}
+			fclose(f);
 		}
-		fclose(f);
-	}
-	else
-		cout << "Rentrez un nom de fichier correct" << endl;
-	sequence.push_back(0);
+		else
+			cout << "Rentrez un nom de fichier correct" << endl;
+		sequence.push_back(0);
 	}
 	
 	vector<int8_t> fct_case_vector(vector<int8_t> prot,char c){
-	
+	//fuck l'indentation
 	int8_t a;
 	switch(c) {
 		case 'A':
@@ -253,12 +254,14 @@ public:
 	return prot;
 	
 }
-	vector<int8_t> getsequence()
+	//par principe on s'assure d'avoir un const
+	const vector<int8_t> getsequence()
 	{
 		return sequence;
 	}
-};
+}
 
+// enlèvement du main : main implique un lancement du code
 int main(){
 	return 0;
 }
