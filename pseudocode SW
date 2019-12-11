@@ -20,8 +20,8 @@ function smith_walterman(D)
 				H[i;j] = max(0,D(A[i],B[j]),H[i-1,j] - DELTA,- DELTA)
 			endif
 			
-			if (best_score < score) then
-				best_score = score
+			if (best_score < H[i,j]) then
+				best_score = H[i,j]
 				x,y = i,j
 			endif
 		endfor
@@ -48,5 +48,36 @@ function find_path(x,y)
 	endif
 	
 	return score
+endfunction
+
+
+function SW-Gotoh-Swipe(D)
+	H[n,m] #Initialisation de la matrice de longueur n et largeur m (n=longueur de la séquence fasta et m=longueur de la séquence database)
+	best_score = 0 #Pour ne pas devoir refaire une recherche par après
+	x,y #Les coordonnées du meilleur score
+	for i=1 to n do #On regarde les lignes une par une
+		for j=1 to n do #on regarde toutes les colonnes pour une ligne
+			if (j == 0)
+				E[i,j] = 0
+			else
+				E[i,j] = max(H[i,j-1] - Q,E[i,j-1] - R)
+			
+			if (i == 0)
+				F[i,j] = 0
+			else
+				F[i,j] = max(H[i-1,j] - Q,E[i-1,j] - R)
+			
+			if(i == 0 && j == 0)
+				H[i,j] = 0
+			else
+				H[i,j] = max(H[i-1,j-1] + D(A[i],B[j]),F[i,j],E[i,j])
+			
+			if (best_score < H[i,j]) then
+				best_score = H[i,j]
+				x,y = i,j
+			endif
+		endfor
+	endfor
+	return H,best_score,x,y #en réalité best_score,x et y seront une structure de données ou une classe --> pointeur
 endfunction
 
