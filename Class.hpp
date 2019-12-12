@@ -1,54 +1,78 @@
-// .h 
-// ; pour les fct ????
+#include <iostream>
+#include <cstdio>
+#include <fstream>
+#include <byteswap.h>
+#include <vector>
+#include <tuple>
 
+using namespace std;
 
 class Fichier
 {
-private:
-	const char* name;
+protected:
+	char name[50];
+	ifstream in;
 public:
 	Fichier(const char* fichier = 0);
 	const char* getname();
+	void Open(int offset);
+	void Close();
 };
 
-class Fichier_head
+class Fichier_head: public Fichier
 {
-private:
-	const char* name; //Pas besoin de ça vu qu'on hérite de la classe parent 
+
 public:
 	Fichier_head(const char* fichier = 0);
-	const char* getname(); //Pas besoin de ça vu qu'on hérite de la classe parent
+	char getprotname(int offset);
 };
 
-class Fichier_index
+class Fichier_index: public Fichier
 {
-private:
-	const char* name; //Pas besoin de ça vu qu'on hérite de la classe parent
 	int debut;
-	int lengthdata;
+	int nbreprot;
 public:
 	Fichier_index(const char* fichier = 0);
-	const char* getname() //Pas besoin de ça vu qu'on hérite de la classe parent
 	int getseqoffset(int i);
 	int getheadoffset(int i);
+	int getnbreprot();
+	int getsize(int i);
 };
 
-class Fichier_sequence
+class Fichier_sequence: public Fichier
 {
-private:
-	const char* name; //Pas besoin de ça vu qu'on hérite de la classe parent
 public:
 	Fichier_sequence(const char* fichier = 0);
-	const char* getname(); //Pas besoin de ça vu qu'on hérite de la classe parent
-	
+	void Read(int byte, int8_t *var);
 };
 
 class Sequence
 {
-private:
+protected:
+	int prot_len;
+public:
+	int getprot_len();
+};
+
+class Sequence_Fasta: public Sequence
+{
 	vector<int8_t> sequence;
 public:
-	Sequence(const char* fasta = 0);
+	Sequence_Fasta(const char* fasta);
 	vector<int8_t> fct_case_vector(vector<int8_t> prot,char c);
-	const vector<int8_t> getsequence(); //changement here
+	const vector<int8_t> getsequence();
 };
+
+class Sequence_Blast: public Sequence
+{
+	int psqoff;
+	int hdroff;
+	int score;
+public:
+	Sequence_Blast(int offset, int size);
+	void update_score(int points);
+	int getpsqoff();
+	int gethdroff();
+	int getscore();
+};
+
