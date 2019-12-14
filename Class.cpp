@@ -4,6 +4,7 @@
 #include <byteswap.h>
 #include <vector>
 #include <tuple>
+#include <string.h>
 
 using namespace std;
 
@@ -15,7 +16,7 @@ protected:
 public:
 	Fichier(const char* fichier = 0)
 	{
-		sprintf(name,fichier);
+		strcpy(name,fichier);
 	}
 	const char* getname()
 	{
@@ -140,11 +141,11 @@ public:
 class Fichier_sequence: public Fichier
 {
 public:
-	Fichier_sequence(char fichier = 0)
+	Fichier_sequence(const char* fichier = 0)
 	{
 		sprintf(name,"%s.psq",fichier);
 	}
-	void Read(int byte, int8_t *var)
+	void Read(int byte, uint8_t *var)
 	{
 		if( in.is_open() )
 		{
@@ -344,4 +345,94 @@ class Sequence_Blast: public Sequence
 		
 };
 
+class Algorithme{
+	//Les classes qui nous seront utiles et qui ne changeront jamais
+	class Sequence_Fasta* fasta;
+	class Fichier_sequence* psq;
+	class Sequence_Blast* blast;
+	
+	//Matrice Blosum et gap
+	int Q;
+	int R;
+	int D[20][20];
+	
+	int max(int a,int b,int c=0,int d=0){
+	if(a<=b && a<=c && a<=d){ //On priviligie un cas
+		return a;}
+	if (b<a && b<c && b<d){
+		return b;}
+	if (c<a && c<b && c<d){
+		return c;}
+	if (d<a && d<b && d<c){
+		return d;
+	}
+	return 0; //Si erreur; return 0;
+	}
+	
+	public:
+	
+	/* transcription du pseudocode SW-Gotoh-SWIPE
+	* Où D est la matrice BLOSUM
+	* la structure (ou classe) local_max a comme données int Best_Score, int x, int y;
+	* Structure sequence (ou classe) pour toutes les informations concernant les séquences
+	*/
+	void SW_Gotoh_SWIPE(){
+		//Matrice de score et de gap
+		vector<int> H;
+		vector<int> E;
+		int F;
+		
+		for(int x=0;x<(*blast).getprot_len();x++){
+			H.push_back(0);
+			E.push_back(0);
+		}
+		
+		//Variable temporaire pour celles supprimées par l'itération précédente
+		int temp_var;
+		int H_prec;
+		
+		//Variable de score local et de meilleur score global aisni que ses coordonnées
+		int best_score;
+		
+		uint8_t prot;
+		psq->Open(blast->getpsqoff());
 
+		for (int i=0;i<fasta->getprot_len();i++){
+			for(int j=0;j<blast->getprot_len();j++){
+				
+				psq->Read(sizeof(uint8_t),&prot);
+				
+				/* {{{ ---- Les matrices de gap ----- */
+				if (j == 0)
+					E[j] = 0;
+				else
+					E[j] = max(H[j-1] - Q,E[j-1] - R);
+			
+				if (i == 0)
+					F = 0;
+				else
+					F = max(H[j] - Q,E[j] - R);
+				/* }}}}}}}} */
+				
+				temp_var = H[j];
+				
+				/* {{{{{---- Matrice de score ---- */
+				if(i == 0 || j == 0) //Si les conditions ne sont pas respectées
+					H[j] = 0;
+				else
+					H[j] = max(H_prec + D[(int) (fasta->getsequence())[i]][(int) prot],F,E[j],0);
+				/* }}}}}} */
+				
+				H_prec = temp_var;
+				
+				if (best_score < H[j]){
+					best_score = H[j];
+				}
+				
+			}
+		}
+		psq->Close();
+		blast->update_score(best_score);
+	}
+	
+};
