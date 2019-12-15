@@ -369,6 +369,82 @@ class Algorithme{
 	return 0; //Si erreur; return 0;
 	}
 	
+	int indices_blosum(uint8_t a){
+		int res;
+		switch(a){
+			case 1:
+				res = 0;
+				break;
+			case 2:
+				res = 20;
+				break;
+			case 3:
+				res = 4;
+				break;
+			case 4:
+				res = 3;
+				break;
+			case 5:
+				res = 6;
+				break;
+			case 6:
+				res = 13;
+				break;
+			case 7:
+				res = 7;
+				break;
+			case 8:
+				res = 8;
+				break;
+			case 9:
+				res = 9;
+				break;
+			case 10:
+				res = 11;
+				break;
+			case 11;
+				res = 10;
+				break;
+			case 12:
+				res = 12;
+				break;
+			case 13:
+				res = 2;
+				break;
+			case 14:
+				res = 14;
+				break;
+			case 15:
+				res = 5;
+				break;
+			case 16:
+				res = 1;
+				break;
+			case 17:
+				res = 15;
+				break;
+			case 18:
+				res = 16;
+				break;
+			case 19:
+				res = 19;
+				break;
+			case 20:
+				res = 17;
+				break;
+			case 21:
+				res = 22;
+				break;
+			case 22:
+				res = 18;
+				break;
+			case 23:
+				res = 21;
+				break;
+		}
+		return res;
+	}
+	
 	public:
 	
 	/* transcription du pseudocode SW-Gotoh-SWIPE
