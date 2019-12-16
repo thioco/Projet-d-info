@@ -1,11 +1,15 @@
-all: read_fasta.o read_blast.o
-	g++ read_fasta.o read_blast.o find_exact_match.cpp -o3 main
-	
-read_fasta.o: read_fasta.cpp
-	g++ read_fasta.cpp -c
-
-read_blast.o: read_blast.cpp
-	g++ read_blast.cpp -c
-
 clean: 
 	rm *.o
+	
+main: fichier.o sequence.o algo.o main.cpp
+	g++ Class.o main.cpp -o main
+
+fichier.o: fichier.cpp
+	g++ fichier.cpp -c
+	
+sequence.o: sequence.cpp
+	g++ sequence.cpp -c
+
+algo.o: algo.cpp
+	g++ algo.cpp -c
+
