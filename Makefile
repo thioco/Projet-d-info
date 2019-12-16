@@ -2,7 +2,7 @@ clean:
 	rm *.o
 	
 main: fichier.o sequence.o algo.o main.cpp
-	g++ Class.o main.cpp -o main
+	g++ fichier.o sequence.o algo.o main.cpp -o main
 
 fichier.o: fichier.cpp
 	g++ fichier.cpp -c

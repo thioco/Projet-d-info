@@ -6,6 +6,8 @@
 #include <tuple>
 #include <string.h>
 
+#include "fichier.cpp"
+#include "sequence.cpp"
 
 using namespace std;
 
@@ -94,7 +96,7 @@ class Algorithme{
 			}
 			
 			//cout << "Voici la valeur de la blosum :" << blosum62[indices_blosum((int) prot)][indices_blosum((fasta->getsequence())[i])] << endl;
-			if(i==0)
+			if(i==3)
 				break;
 		}
 		psq->Close();

@@ -6,8 +6,7 @@
 #include <string>
 #include <tuple>
 
-#include "Class.cpp"
-
+#include "algo.cpp"
 
 using namespace std;
 
