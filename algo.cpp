@@ -45,9 +45,10 @@ class Algorithme{
 		int best_score;
 		
 		uint8_t prot;
-		psq->Open(blast->getpsqoff());
+		cout << "Offset psq=" << blast->getpsqoff() << endl;
 		
 		for (int i=0;i<fasta->getprot_len();i++){
+			psq->Open(blast->getpsqoff());
 			for(int j=0;j<blast->getprot_len();j++){
 				
 				psq->Read(sizeof(uint8_t),&prot);
@@ -58,7 +59,7 @@ class Algorithme{
 				else
 					E[j] = max(H[j-1] - Q,E[j-1] - R);
 				
-				cout << "Matrice E :" << E[j] << " pour j :" << j <<endl;
+				//cout << "Matrice E :" << E[j] << " pour j :" << j <<endl;
 				
 				if (i == 0)
 					F = 0;
@@ -66,10 +67,12 @@ class Algorithme{
 					F = max(H[j] - Q,E[j] - R);
 				/* }}}}}}}} */
 				
-				cout << "Matrice F :" << F << " pour j :" << j <<endl;
+				//cout << "Matrice F :" << F << " pour j :" << j <<endl;
 				
 				temp_var = H[j];
-				cout << "temp_var:" << temp_var << " H_prec :" << H_prec <<endl;
+				//cout << "temp_var:" << temp_var << " H_prec :" << H_prec <<endl;
+				
+				//cout << "prot :" << (int) prot << " j :" << j <<endl;
 				
 				/* {{{{{---- Matrice de score ---- */
 				if(i == 0 || j == 0) //Si les conditions ne sont pas respectées
@@ -78,26 +81,25 @@ class Algorithme{
 					H[j] = max(H_prec + blosum62[indices_blosum((int) prot)][indices_blosum((fasta->getsequence())[i])],F,E[j],0);
 				/* }}}}}} */
 				
-				cout << "Voici la valeur du max:" << max(H_prec + blosum62[indices_blosum((int) prot)][indices_blosum((fasta->getsequence())[i])],F,E[j],0) << endl;
+				/*cout << "Voici la valeur du max:" << max(H_prec + blosum62[indices_blosum((int) prot)][indices_blosum((fasta->getsequence())[i])],F,E[j],0) << endl;
 				cout << "Voici la valeur de la blosum :" << blosum62[indices_blosum((int) prot)][indices_blosum((fasta->getsequence())[i])] << endl;
 				
 				cout << "Matrice H :" << H[j] << " pour j :" << j <<endl;
-				
+				cout  << endl;*/
 				H_prec = temp_var;
 				
 				if (best_score < H[j]){
 					best_score = H[j];
 					//cout << "Meilleur score :" << best_score << endl;
 				}
-				
-				if (j == 24)
-					break;
+				/*if (j == 24)
+					break;*/
 				
 			}
-			
+			psq->Close();
 			//cout << "Voici la valeur de la blosum :" << blosum62[indices_blosum((int) prot)][indices_blosum((fasta->getsequence())[i])] << endl;
-			if(i==3)
-				break;
+			/*if(i==3)
+				break;*/
 		}
 		psq->Close();
 		blast->update_score(best_score);
@@ -138,17 +140,13 @@ class Algorithme{
             {0, -1, -1, -1, -2, -1, -1, -1, -1, -1, -1,-1, -1, -1, -2,  0,  0, -2, -1, -1, -1, -1, -1}};
 	
 	int max(int a,int b,int c=0,int d=0){
-		if(a>=b && a>=c && a>=d){ //On priviligie un cas
-			cout << "a =" << a << endl; 
+		if(a>=b && a>=c && a>=d){ //On priviligie un cas 
 			return a;}
 		if (b>a && b>c && b>d){
-			cout << "b =" << b << endl; 
 			return b;}
 		if (c>a && c>b && c>d){
-			cout << "c =" << c << endl; 
 			return c;}
-		if (d>a && d>b && d>c){
-			cout << "d =" << d << endl; 
+		if (d>a && d>b && d>c){ 
 			return d;
 		}
 		return 0; //Si erreur; return 0;

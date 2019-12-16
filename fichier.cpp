@@ -100,10 +100,10 @@ public:
 		if( in.is_open() )
 		{
 			uint32_t x;
-			in.seekg(debut+(i+nbreprot)*4);
+			in.seekg(debut+(i+1+nbreprot)*4);
 			in.read((char *) (&x), sizeof(x) );
 			in.close();
-			return bswap_32((int32_t) x );
+			return bswap_32((int32_t) x);
 		}
 	}
 	
@@ -113,7 +113,7 @@ public:
 		if( in.is_open() )
 		{
 			uint32_t x;
-			in.seekg(debut+i*4);
+			in.seekg(debut+(i-1)*4);//Si pas bon titre regardez ici
 			in.read((char *) (&x), sizeof(x) );
 			in.close();
 			return bswap_32((int32_t) x );
@@ -127,14 +127,21 @@ public:
 	
 	int getsize(int i)
 	{
-		uint32_t x;
-		in.seekg(debut+(i+nbreprot)*4);
-		int begin = bswap_32((int32_t) x );
+		int begin, end;
+		in.open(name,ios::binary |ios::in);
+		if( in.is_open() )
+		{
+			uint32_t x;
+			in.seekg(debut+(i+1+nbreprot)*4);
+			in.read((char *) (&x), sizeof(x));
+			begin = bswap_32((int32_t) x );
 		
-		in.seekg(debut+(i+nbreprot+1)*4);
-		int end = bswap_32((int32_t) x );
-		
-		return (end - begin);
+			//in.seekg(debut+(i+nbreprot)*4);
+			in.read((char *) (&x), sizeof(x));
+			end = bswap_32((int32_t) x );
+			in.close();
+		}
+		return (end - begin-1);
 		
 	}
 };
@@ -152,7 +159,7 @@ public:
 	{
 		if( in.is_open() )
 		{
-			in.read((char *) (var), sizeof(byte));
+			in.read((char *) (var), sizeof(char)*byte);
 		}
 	}
 	
