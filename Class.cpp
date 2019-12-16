@@ -5,7 +5,7 @@
 #include <vector>
 #include <tuple>
 #include <string.h>
-
+//#include "Class.hpp"
 using namespace std;
 
 class Fichier
@@ -402,7 +402,7 @@ class Algorithme{
 			case 10:
 				res = 11;
 				break;
-			case 11;
+			case 11:
 				res = 10;
 				break;
 			case 12:
@@ -446,13 +446,20 @@ class Algorithme{
 	}
 	
 	public:
+	Algorithme(Sequence_Fasta* fast ,Fichier_sequence* ps)
+	{
+		fasta = fast;
+		psq = ps;
+		
+	}
 	
 	/* transcription du pseudocode SW-Gotoh-SWIPE
 	* Où D est la matrice BLOSUM
 	* la structure (ou classe) local_max a comme données int Best_Score, int x, int y;
 	* Structure sequence (ou classe) pour toutes les informations concernant les séquences
 	*/
-	void SW_Gotoh_SWIPE(){
+	void SW_Gotoh_SWIPE(Sequence_Blast* bla){
+		blast = bla;
 		//Matrice de score et de gap
 		vector<int> H;
 		vector<int> E;
@@ -512,3 +519,4 @@ class Algorithme{
 	}
 	
 };
+
