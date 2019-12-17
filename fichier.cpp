@@ -5,46 +5,39 @@
 #include <vector>
 #include <tuple>
 #include <string.h>
+#include "fichier.h"
 
 
 using namespace std;
 
-class Fichier
-{
-protected:
-	char name[50];
-	ifstream in;
-public:
-	Fichier(const char* fichier = 0)
+
+Fichier::Fichier(const char* fichier)
 	{
 		strcpy(name,fichier);
 	}
-	const char* getname()
+const char* Fichier::getname() const
 	{
 		return name;
 	}
-	void Open(int offset)
+void Fichier::Open(int offset)
 	{
 		in.open(name, ios::binary|ios::out);
 		in.seekg(offset);
 	}
-	void Close()
+void Fichier::Close()
 	{
 		in.close();
 	}
-};
 
 
 
-class Fichier_head: public Fichier
-{
-public:
-	Fichier_head(const char* fichier = 0) : Fichier(fichier)
+
+Fichier_head::Fichier_head(const char* fichier)
 	{
 		sprintf(name,"%s.phr",fichier);
 	}
 	
-	void getprotname(int offset)
+void Fichier_head::getprotname(int offset) 
 	{
 		in.open(name,ios::binary |ios::out);
 		in.seekg(offset);
@@ -59,16 +52,11 @@ public:
 		cout <<">"<< a << endl;
 		in.close();
 	}
-};
 
 
 
-class Fichier_index: public Fichier
-{
-	int debut;
-	int nbreprot;
-public:
-	Fichier_index(const char* fichier = 0): Fichier(fichier)
+
+Fichier_index::Fichier_index(const char* fichier)
 	{
 		sprintf(name,"%s.pin",fichier);
 		in.open(name,ios::binary |ios::in);
@@ -94,7 +82,7 @@ public:
 		}
 	}
 
-	int getseqoffset(int i)
+int Fichier_index::getseqoffset(int i)
 	{
 		in.open(name,ios::binary |ios::in);
 		if( in.is_open() )
@@ -108,7 +96,7 @@ public:
 		return 0;
 	}
 	
-	int getheadoffset(int i)
+int Fichier_index::getheadoffset(int i)
 	{
 		in.open(name,ios::binary |ios::in);
 		if( in.is_open() )
@@ -122,12 +110,12 @@ public:
 		return 0;
 	}
 	
-	int getnbreprot()
+int Fichier_index::getnbreprot() const
 	{
 		return nbreprot;
 	}
 	
-	int getsize(int i)
+int Fichier_index::getsize(int i)
 	{
 		int begin, end;
 		in.open(name,ios::binary |ios::in);
@@ -146,18 +134,15 @@ public:
 		return (end - begin-1);
 		
 	}
-};
 
 
 
-class Fichier_sequence: public Fichier
-{
-public:
-	Fichier_sequence(const char* fichier = 0): Fichier(fichier)
+
+Fichier_sequence::Fichier_sequence(const char* fichier)
 	{
 		sprintf(name,"%s.psq",fichier);
 	}
-	void Read(int byte, uint8_t *var)
+void Fichier_sequence::Read(int byte, uint8_t *var)
 	{
 		if( in.is_open() )
 		{
@@ -165,6 +150,4 @@ public:
 		}
 	}
 	
-};
-
 

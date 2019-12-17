@@ -5,82 +5,77 @@
 #include <vector>
 #include <tuple>
 #include <string.h>
-
+#include "sequence.h"
+//commentaire useless
 
 using namespace std;
 
 
-class Sequence
-{
-	protected:
-		int prot_len;
-	public:
-		int getprot_len()
-		{
-			return prot_len;
-		}
-};
 
-class Sequence_Blast: public Sequence
+int Sequence::getprot_len()
 {
-		int psqoff;
-		int hdroff;
-		int score;
+	return prot_len;
+}
+
+
+
+Sequence_Blast::Sequence_Blast()
+{
+	score = 0;
+}
+Sequence_Blast::Sequence_Blast(int offH,int offP, int size)
+{
+	hdroff = offH;
+	psqoff = offP;
+	prot_len = size;
+	score = 0;
+}
+
+void Sequence_Blast::update_score(int points)
+{
+	score = points;
+}
+
+int Sequence_Blast::getpsqoff() const
+{
+	return psqoff;
+}
+
+int Sequence_Blast::gethdroff() const
+{
+	return hdroff;
+}
+
+int Sequence_Blast::getscore() const
+{
+	return score;
+}
 		
-	public:
-		Sequence_Blast(int offH,int offP, int size)
-		{
-			hdroff = offH;
-			psqoff = offP;
-			prot_len = size;
-			score = 0;
-		}
-		void update_score(int points)
-		{
-			score = points;
-		}
-		int getpsqoff()
-		{
-			return psqoff;
-		}
-		int gethdroff()
-		{
-			return hdroff;
-		}
-		int getscore()
-		{
-			return score;
-		}
-		
-};
 
 
-class Sequence_Fasta: public Sequence
+
+Sequence_Fasta::Sequence_Fasta(const char* fasta)
 {
-	vector<int8_t> sequence;
-public:
-	Sequence_Fasta(const char* fasta)
-	{
-		FILE* f=fopen(fasta,"r");
-        if (f != NULL) {
-	
-			char c; /*Un seul caractère = un seul acide aminé*/
-			char poubelle[500]="";
-			fgets(poubelle,500,f);
+FILE* f=fopen(fasta,"r");
+if (f != NULL) {
+	char c; /*Un seul caractère = un seul acide aminé*/
+	char poubelle[500]="";
+	fgets(poubelle,500,f);
 
-			for (c=getc(f);c!=EOF;c=getc(f)){
-				sequence = fct_case_vector(sequence,c);
-			}
-			fclose(f);
-			prot_len = sequence.size();
+	for (c=getc(f);c!=EOF;c=getc(f))
+		{
+		sequence = fct_case_vector(sequence,c);
 		}
-		else
-			cout << "Rentrez un nom de fichier correct" << endl;
-		sequence.push_back(0);
+	fclose(f);
+	prot_len = sequence.size();
 	}
+else
+	cout << "Rentrez un nom de fichier correct" << endl;
+sequence.push_back(0);
+}
 	
-	vector<int8_t> fct_case_vector(vector<int8_t> prot,char c)
-	{
+vector<int8_t> Sequence_Fasta::fct_case_vector(vector<int8_t> prot,char c)
+{
 	int8_t a;
 	switch(c) {
 		case 'A':
@@ -192,8 +187,8 @@ public:
 	
 }
 	//par principe on s'assure d'avoir un const
-	const vector<int8_t> getsequence()
+vector<int8_t> Sequence_Fasta::getsequence() const
 	{
 		return sequence;
 	}
-};
+
