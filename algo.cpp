@@ -8,6 +8,7 @@
 
 #include "fichier.cpp"
 #include "sequence.cpp"
+//commentaire useless
 
 using namespace std;
 
@@ -30,13 +31,16 @@ class Algorithme{
 	*/
 	void SW_Gotoh_SWIPE(Sequence_Blast* blast){
 		//Matrice de score et de gap
-		vector<int> H;
-		vector<int> E;
+		//vector<int> H;
+		int* H;
+		int* E;
 		int F = 0;
+		H = new int[blast->getprot_len()];
+		E = new int[blast->getprot_len()];
 		
 		for(int x=0;x<blast->getprot_len();x++){
-			H.push_back(0);
-			E.push_back(0);
+			H[x]=0;
+			E[x]=0;
 		}
 		
 		//Variable temporaire pour celles supprimées par l'itération précédente
