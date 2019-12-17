@@ -32,7 +32,7 @@ void Fichier::Close()
 
 
 
-Fichier_head::Fichier_head(const char* fichier)
+Fichier_head::Fichier_head(const char* fichier): Fichier(fichier)
 	{
 		sprintf(name,"%s.phr",fichier);
 	}
@@ -56,7 +56,7 @@ void Fichier_head::getprotname(int offset)
 
 
 
-Fichier_index::Fichier_index(const char* fichier)
+Fichier_index::Fichier_index(const char* fichier): Fichier(fichier)
 	{
 		sprintf(name,"%s.pin",fichier);
 		in.open(name,ios::binary |ios::in);
@@ -138,7 +138,7 @@ int Fichier_index::getsize(int i)
 
 
 
-Fichier_sequence::Fichier_sequence(const char* fichier)
+Fichier_sequence::Fichier_sequence(const char* fichier): Fichier(fichier)
 	{
 		sprintf(name,"%s.psq",fichier);
 	}

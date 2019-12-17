@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <time.h>
 
-#include "algo.cpp"
+#include "algo.h"
 //commentaire useless
 using namespace std;
 
@@ -115,7 +115,7 @@ int main(int argc, char **argv)
 	cout << endl;
 	cout << "Le temps pris par l'algorithme : " << (double)(clock()-tStart)/(CLOCKS_PER_SEC)  << " secondes."<< endl << endl;
 	//Affichage des scores dans l'ordre croissant
-	for(int j=init_map-1;j>=0;j--){
+	for(int j=init_list-1;j>=0;j--){
 		phr->getprotname((list_seq[j])->gethdroff());
 		cout << "raw score: " << (list_seq[j])->getscore() << ", bit score= " << (0.267*((list_seq[j])->getscore()) + 3.34)/(0.693) << endl << endl;
 		delete list_seq[j];}

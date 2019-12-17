@@ -17,12 +17,6 @@ int Sequence::getprot_len()
 	return prot_len;
 }
 
-
-
-Sequence_Blast::Sequence_Blast()
-{
-	score = 0;
-}
 Sequence_Blast::Sequence_Blast(int offH,int offP, int size)
 {
 	hdroff = offH;
@@ -56,23 +50,23 @@ int Sequence_Blast::getscore() const
 
 Sequence_Fasta::Sequence_Fasta(const char* fasta)
 {
-FILE* f=fopen(fasta,"r");
-if (f != NULL) {
-	char c; /*Un seul caractère = un seul acide aminé*/
-	char poubelle[500]="";
-	fgets(poubelle,500,f);
+	FILE* f=fopen(fasta,"r");
+	if (f != NULL) {
+		char c; /*Un seul caractère = un seul acide aminé*/
+		char poubelle[500]="";
+		fgets(poubelle,500,f);
 
-	for (c=getc(f);c!=EOF;c=getc(f))
-		{
-		sequence = fct_case_vector(sequence,c);
+		for (c=getc(f);c!=EOF;c=getc(f))
+			{
+			sequence = fct_case_vector(sequence,c);
+			}
+		fclose(f);
+		prot_len = sequence.size();
 		}
-	fclose(f);
-	prot_len = sequence.size();
+	else
+		cout << "Rentrez un nom de fichier correct" << endl;
+	sequence.push_back(0);
 	}
-else
-	cout << "Rentrez un nom de fichier correct" << endl;
-sequence.push_back(0);
-}
 	
 vector<int8_t> Sequence_Fasta::fct_case_vector(vector<int8_t> prot,char c)
 {

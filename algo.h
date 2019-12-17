@@ -7,6 +7,7 @@
 #include <vector>
 #include <tuple>
 #include <string.h>
+
 #include "fichier.h"
 #include "sequence.h"
 
@@ -14,25 +15,49 @@ using namespace std;
 
 class Algorithme
 {
-public:
-//Constructeur
-Algorithme(Sequence_Fasta* f , Fichier_sequence* p ,int g_o , int g_e,int** B);
+	public:
+	//Constructeur
+	Algorithme(Sequence_Fasta* f , Fichier_sequence* p ,int g_o , int g_e,int** B);
 
-//fonction smith watermann
-void SW_Gotoh_SWIPE(Sequence_Blast* blast);
-private:
-//Les classes qui nous seront utiles et qui ne changeront jamais
-class Sequence_Fasta* fasta;
-class Fichier_sequence* psq;
+	//fonction smith watermann
+	void SW_Gotoh_SWIPE(Sequence_Blast* blast);
+	private:
+	//Les classes qui nous seront utiles et qui ne changeront jamais
+	class Sequence_Fasta* fasta;
+	class Fichier_sequence* psq;
 	
-//Matrice Blosum et gap
-int Q;
-int R;
-int blosum62[23][23];
+	//Matrice Blosum et gap
+	int Q;
+	int R;
 
-//méthodes privés
-int max(int a,int b,int c=0,int d=0);
-int indices_blosum(uint8_t a);
+	//méthodes privés
+	int max(int a,int b,int c=0,int d=0);
+	int indices_blosum(uint8_t a);
+	
+	//Blosum temp
+	int blosum62[23][23] = {{4, -1,-2, -2, 0, -1, -1, 0, -2, -1, -1, -1, -1, -2, -1,  1,  0, -3, -2,  0, -2, -1,  0},
+            {-1, 5,  0, -2, -3,  1,  0, -2,  0, -3, -2,  2, -1, -3, -2, -1, -1, -3, -2, -3, -1,  0, -1},
+            {-2,  0,  6,  1, -3,  0,  0,  0,  1, -3, -3,  0, -2, -3, -2,  1,  0, -4, -2, -3,  3,  0, -1},
+            {-2, -2,  1,  6, -3,  0,  2, -1, -1, -3, -4, -1, -3, -3, -1,  0, -1, -4, -3, -3,  4,  1, -1},
+            {0, -3, -3, -3,  9, -3, -4, -3, -3, -1, -1, -3, -1, -2, -3, -1, -1, -2, -2, -1, -3, -3,-2},
+            {-1,  1,  0,  0, -3,  5,  2, -2,  0, -3, -2,  1,  0, -3, -1,  0, -1, -2, -1, -2,  0,  3, -1},
+            {-1,  0,  0,  2, -4,  2,  5, -2,  0, -3, -3,  1, -2, -3, -1,  0, -1, -3, -2, -2,  1,  4, -1},
+            {0, -2,  0, -1, -3, -2, -2,  6, -2, -4, -4, -2, -3, -3, -2,  0, -2, -2, -3, -3, -1, -2, -1},
+            {-2,  0,  1, -1, -3,  0,  0, -2,  8, -3, -3, -1, -2, -1, -2, -1, -2, -2,  2, -3,  0,  0, -1},
+            {-1, -3, -3, -3, -1, -3, -3, -4, -3,  4,  2, -3,  1,  0, -3, -2, -1, -3, -1,  3, -3, -3, -1},
+            {-1, -2,-3, -4, -1, -2, -3, -4, -3,  2,  4, -2,  2,  0, -3, -2, -1, -2, -1,  1, -4, -3, -1},
+            {-1,  2,  0, -1, -3,  1,  1, -2, -1, -3, -2,  5, -1, -3, -1,  0, -1, -3, -2, -2,  0,  1, -1},
+            {-1, -1, -2, -3, -1,  0, -2, -3, -2,  1,  2, -1,  5,  0, -2, -1, -1, -1, -1,  1, -3, -1, -1},
+            {-2, -3, -3, -3, -2, -3, -3, -3, -1,  0,  0, -3,  0,  6, -4, -2, -2,  1,  3, -1, -3, -3, -1},
+            {-1, -2, -2, -1, -3, -1, -1, -2, -2, -3, -3, -1, -2, -4,  7, -1, -1, -4, -3, -2, -2, -1, -2},
+            {1, -1,  1,  0, -1,  0,  0,  0, -1, -2, -2,  0, -1, -2, -1,  4,  1, -3, -2, -2,  0,  0,  0},
+            {0, -1,  0, -1, -1, -1, -1, -2, -2, -1, -1, -1, -1, -2, -1,  1,  5, -2, -2,  0,-1, -1,  0},
+            {-3, -3, -4, -4, -2, -2, -3, -2, -2, -3, -2, -3, -1,  1, -4, -3, -2, 11,  2, -3, -4, -3, -2},
+            {-2, -2, -2, -3, -2, -1, -2, -3,  2, -1, -1, -2, -1,  3, -3, -2, -2,  2,  7, -1, -3, -2, -1},
+            {0, -3, -3, -3, -1, -2, -2, -3, -3,  3,  1, -2,  1, -1, -2, -2,  0, -3, -1,  4, -3, -2, -1},
+            {-2, -1,  3,  4, -3,  0, 1, -1,  0, -3, -4,  0, -3, -3, -2,  0, -1, -4, -3, -3,  4,  1, -1},
+            {-1,  0,  0,  1, -3,  3,  4, -2,  0, -3, -3,  1, -1, -3, -1,  0, -1, -3, -2, -2,  1,  4, -1},
+            {0, -1, -1, -1, -2, -1, -1, -1, -1, -1, -1,-1, -1, -1, -2,  0,  0, -2, -1, -1, -1, -1, -1}};
 };
 
 
