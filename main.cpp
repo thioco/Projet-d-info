@@ -8,15 +8,16 @@
 #include <time.h>
 
 #include "algo.cpp"
-
+//commentaire useless
 using namespace std;
 
 //<>
 
 int gap_open = 11;
 int gap_extension = 1;
+int** BLOSUM = NULL;
 
-void recur_list_seq(vector<Sequence_Blast*> list_seq,Sequence_Blast* seq);
+void recur_list_seq(Sequence_Blast* list_seq[],Sequence_Blast* seq ,int i);
 
 int main(int argc, char **argv)
 {
@@ -48,7 +49,11 @@ int main(int argc, char **argv)
 			}
 			else if(!strcmp(argv[arg],"-blosum")){
 				if(argc > arg+1){
-					//read blosum
+					/* PAS ENCORE OPERATIONNEL ATTENDRE LA MISE EN FORME SOUS .h
+					 * Fichier_Blosum* f_b = new(argv[arg+1]);
+					 * BLOSUM = f_b->read();
+					 * f_b->destrcutor();
+					 */
 					cout <<" ";
 					arg++;}
 				else{
@@ -69,11 +74,10 @@ int main(int argc, char **argv)
 	Fichier_head* phr = new Fichier_head(argv[2]);
 	Fichier_index* pin = new Fichier_index(argv[2]);
 	Fichier_sequence* psq = new Fichier_sequence(argv[2]);
-	Algorithme* algo = new Algorithme(fasta, psq,gap_open,gap_extension);
-		
+	Algorithme* algo = new Algorithme(fasta, psq,gap_open,gap_extension,BLOSUM); 	
 	int init_map = 0;
-	vector<Sequence_Blast*> list_seq;
-		
+	Sequence_Blast* list_seq [5];
+	
 	cout << "Nombre de séquences : "<< pin->getnbreprot() << endl;
 		
 	for(int i=0;i<pin->getnbreprot(); i++)
@@ -83,16 +87,16 @@ int main(int argc, char **argv)
 		algo->SW_Gotoh_SWIPE(seq);
 			
 		if(init_map < 5){
-			list_seq.push_back(seq);
+			list_seq[init_map] = seq;
 			init_map++;
 		}
 		else
-			recur_list_seq(list_seq,seq);
+			recur_list_seq(list_seq,seq,0);
 	}
 	
 	cout << endl;
 	cout << "Le temps pris par l'algorithme : " << (double)(clock()-tStart)/(CLOCKS_PER_SEC)  << " secondes."<< endl << endl;
-	for(uint j=0;j<list_seq.size();j++){
+	for(int j=init_map-1;j>=0;j--){
 		phr->getprotname((list_seq[j])->gethdroff());
 		cout << "raw score: " << (list_seq[j])->getscore() << ", bit score= " << (0.267*((list_seq[j])->getscore()) + 3.34)/(0.693) << endl << endl;
 		delete list_seq[j];}
@@ -106,14 +110,13 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-void recur_list_seq(vector<Sequence_Blast*> list_seq, Sequence_Blast* seq){
-	int size = list_seq.size();
+void recur_list_seq(Sequence_Blast* list_seq [], Sequence_Blast* seq, int i){
 	int n;
-	for(n=0;n<size;n++){
+	for(n=i;n<5;n++){
 		if((list_seq[n])->getscore() < seq->getscore()){
 			Sequence_Blast* temp = list_seq[n];
 			list_seq[n] = seq;
-			recur_list_seq(list_seq,temp);
+			recur_list_seq(list_seq,temp,n+1);
 			break;
 		}
 	}
@@ -121,7 +124,8 @@ void recur_list_seq(vector<Sequence_Blast*> list_seq, Sequence_Blast* seq){
 		delete seq;
 	}
 	
-}
+}	
+
 
 
 
