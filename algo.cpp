@@ -14,10 +14,12 @@ using namespace std;
 
 class Algorithme{
 	public:
-		Algorithme(Sequence_Fasta* f, Fichier_sequence* p)
+		Algorithme(Sequence_Fasta* f, Fichier_sequence* p,int g_o, int g_e)
 		{
 			fasta = f;
 			psq = p;
+			Q = g_o + g_e;
+			R = g_e;
 		} 
 	
 	
@@ -59,21 +61,14 @@ class Algorithme{
 				else
 					E[j] = max(H[j-1] - Q,E[j-1] - R);
 				
-				//cout << "Matrice E :" << E[j] << " pour j :" << j <<endl;
-				
 				if (i == 0)
 					F = 0;
 				else
 					F = max(H[j] - Q,E[j] - R);
 				/* }}}}}}}} */
 				
-				//cout << "Matrice F :" << F << " pour j :" << j <<endl;
-				
 				temp_var = H[j];
-				//cout << "temp_var:" << temp_var << " H_prec :" << H_prec <<endl;
-				
-				//cout << "prot :" << (int) prot << " j :" << j <<endl;
-				
+
 				/* {{{{{---- Matrice de score ---- */
 				if(i == 0 || j == 0) //Si les conditions ne sont pas respectées
 					H[j] = 0;
@@ -81,25 +76,13 @@ class Algorithme{
 					H[j] = max(H_prec + blosum62[indices_blosum((int) prot)][indices_blosum((fasta->getsequence())[i])],F,E[j],0);
 				/* }}}}}} */
 				
-				/*cout << "Voici la valeur du max:" << max(H_prec + blosum62[indices_blosum((int) prot)][indices_blosum((fasta->getsequence())[i])],F,E[j],0) << endl;
-				cout << "Voici la valeur de la blosum :" << blosum62[indices_blosum((int) prot)][indices_blosum((fasta->getsequence())[i])] << endl;
-				
-				cout << "Matrice H :" << H[j] << " pour j :" << j <<endl;
-				cout  << endl;*/
 				H_prec = temp_var;
 				
 				if (best_score < H[j]){
 					best_score = H[j];
-					//cout << "Meilleur score :" << best_score << endl;
-				}
-				/*if (j == 24)
-					break;*/
-				
+				}	
 			}
 			psq->Close();
-			//cout << "Voici la valeur de la blosum :" << blosum62[indices_blosum((int) prot)][indices_blosum((fasta->getsequence())[i])] << endl;
-			/*if(i==3)
-				break;*/
 		}
 		psq->Close();
 		blast->update_score(best_score);
@@ -112,8 +95,8 @@ class Algorithme{
 	class Fichier_sequence* psq;
 	
 	//Matrice Blosum et gap
-	int Q = 1 + 11;;
-	int R = 1;
+	int Q;
+	int R;
 	
 	int blosum62[23][23] = {{4, -1,-2, -2, 0, -1, -1, 0, -2, -1, -1, -1, -1, -2, -1,  1,  0, -3, -2,  0, -2, -1,  0},
             {-1, 5,  0, -2, -3,  1,  0, -2,  0, -3, -2,  2, -1, -3, -2, -1, -1, -3, -2, -3, -1,  0, -1},

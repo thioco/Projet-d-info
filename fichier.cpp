@@ -48,7 +48,7 @@ public:
 	{
 		in.open(name,ios::binary |ios::out);
 		in.seekg(offset);
-		in.ignore(7*sizeof(char)); //On ignore 8bytes selon le template du phr
+		in.ignore(7*sizeof(char)); //On ignore 7 bytes selon le template du phr
 		uint8_t n;
 		in.read((char*) &n,sizeof(n));
 		char a[(uint)n];
@@ -56,7 +56,7 @@ public:
 		a[(uint)n]=0; //Des caractères s'ajoutent en plus pour aucune raison...
 	
 		cout << "Le nom du fichier est :" << endl;
-		cout << a << endl;
+		cout <<">"<< a << endl;
 		in.close();
 	}
 };
