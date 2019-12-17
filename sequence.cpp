@@ -28,10 +28,12 @@ class Sequence_Blast: public Sequence
 		int score;
 		
 	public:
-		Sequence_Blast(int offset, int size)
+		Sequence_Blast(int offH,int offP, int size)
 		{
-			psqoff = offset;
+			hdroff = offH;
+			psqoff = offP;
 			prot_len = size;
+			score = 0;
 		}
 		void update_score(int points)
 		{

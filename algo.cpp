@@ -32,20 +32,20 @@ class Algorithme{
 		vector<int> E;
 		int F = 0;
 		
-		for(int x=0;x<(*blast).getprot_len();x++){
+		for(int x=0;x<blast->getprot_len();x++){
 			H.push_back(0);
 			E.push_back(0);
 		}
 		
 		//Variable temporaire pour celles supprimées par l'itération précédente
-		int temp_var;
-		int H_prec;
+		int temp_var=0;
+		int H_prec=0;
 		
 		//Variable de score local et de meilleur score global aisni que ses coordonnées
-		int best_score;
+		int best_score=0;
 		
 		uint8_t prot;
-		cout << "Offset psq=" << blast->getpsqoff() << endl;
+		//cout << "Offset psq=" << blast->getpsqoff() << endl;
 		
 		for (int i=0;i<fasta->getprot_len();i++){
 			psq->Open(blast->getpsqoff());

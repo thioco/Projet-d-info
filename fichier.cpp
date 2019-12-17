@@ -44,7 +44,7 @@ public:
 		sprintf(name,"%s.phr",fichier);
 	}
 	
-	char getprotname(int offset)
+	void getprotname(int offset)
 	{
 		in.open(name,ios::binary |ios::out);
 		in.seekg(offset);
@@ -105,6 +105,7 @@ public:
 			in.close();
 			return bswap_32((int32_t) x);
 		}
+		return 0;
 	}
 	
 	int getheadoffset(int i)
@@ -113,11 +114,12 @@ public:
 		if( in.is_open() )
 		{
 			uint32_t x;
-			in.seekg(debut+(i-1)*4);//Si pas bon titre regardez ici
+			in.seekg(debut+(i)*4);//Si pas bon titre regardez ici
 			in.read((char *) (&x), sizeof(x) );
 			in.close();
 			return bswap_32((int32_t) x );
 		}
+		return 0;
 	}
 	
 	int getnbreprot()
