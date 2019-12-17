@@ -1,0 +1,36 @@
+=================== Auteur ===========================
+COURBOIN Samuel Biomédical
+LOSFELD Armand Informatique
+HIOCO Thomasso Informatique
+
+================= Description ========================
+Voici un code reprenant l'algorithme Smith-Waterman
+pour obtenir un alignement optimal local.
+
+L'algorithme a été grandement inspiré par l'algorithme
+SWIPE, qui permet d'obtenir une complexité en O(n.m)
+pour les performances et O(m) pour la mémoire, où
+n est la taille de la séquence fasta et m la taille
+de la séquence provenant de la database.
+
+=============== Fichier.cpp/.h =======================
+Permet de faire toutes les opérations sur les fichiers
+que le code a besoin.
+
+Contient les classes Fichier, Fichier_Fasta,
+Fichier_Sequence, Fichier_Index, Fichier_Header,
+Fichier_Blosum.
+
+Fichier : Contiet des fonctions générales aux fichiers
+comme open ou close.
+
+Fichier_Fasta : Lis le fichier fasta passé en argument 1
+et traduit les caractères en byte dans une matrice.
+Hérite de la classe Fichier.
+
+Fichier_Sequence : Lis les bytes dans le fichier .fasta.psq.
+Hérite de la classe Fichier
+
+Fichier_Index : Lis les informations utiles comme le
+nombre de séquences et les offset dans le fichier 
+.fasta.pin .
