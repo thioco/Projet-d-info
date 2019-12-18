@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdio>
 #include <fstream>
-#include <byteswap.h>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -57,7 +56,7 @@ int main(int argc, char **argv)
 				if(argc > arg+1){
 					Fichier_Blosum* f_b = new Fichier_Blosum(argv[arg+1]);
 					BLOSUM = f_b->read();
-					free(f_b);
+					delete(f_b);
 					if(BLOSUM == NULL){
 						cout << "Vérifiez votre fichier BLOSUM." << endl;
 						return 3;
@@ -82,9 +81,9 @@ int main(int argc, char **argv)
 	
 	/* {{{{----- Création de la matrice BLOSUM----*/
 	if(BLOSUM == NULL){
-		Fichier_Blosum* f_b = new Fichier_Blosum("BLOSUM62");
-		BLOSUM = f_b->read();
-		free(f_b);
+		Fichier_Blosum* f_bl = new Fichier_Blosum("BLOSUM62");
+		BLOSUM = f_bl->read();
+		delete(f_bl);
 		if(BLOSUM == NULL){
 			cout << "Vérifiez le fichier BLOSUM62." << endl;
 			return 3;
@@ -137,6 +136,8 @@ int main(int argc, char **argv)
 	/*}}}}}}*/
 		
 	/*{{{{----Libération de la mémoire allouée ---- */
+	free(fasta->getsequence());
+	delete(BLOSUM);
 	delete(fasta);
 	delete(phr);
 	delete(pin);

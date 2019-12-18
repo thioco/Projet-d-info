@@ -24,12 +24,6 @@ Algorithme::Algorithme(Sequence_Fasta* f, Fichier_sequence* p,int g_o, int g_e,i
 		} 
 	
 	
-	/* transcription du pseudocode SW-Gotoh-SWIPE
-	* Où D est la matrice BLOSUM
-	* la structure (ou classe) local_max a comme données int Best_Score, int x, int y;
-	* Structure sequence (ou classe) pour toutes les informations concernant les séquences
-	*/
-
 void Algorithme::SW_Gotoh_SWIPE(Sequence_Blast* blast){
 		//Matrice de score et de gap
 		//vector<int> H;

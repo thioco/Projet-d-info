@@ -3,8 +3,8 @@
 #include <fstream>
 #include <byteswap.h>
 #include <vector>
-#include <tuple>
 #include <string.h>
+
 #include "sequence.h"
 //commentaire useless
 
@@ -66,6 +66,12 @@ Sequence_Fasta::Sequence_Fasta(const char* fasta)
 	else
 		cout << "Rentrez un nom de fichier correct" << endl;
 	sequence.push_back(0);
+	
+	seq = (uint8_t*) malloc(sizeof(uint8_t)*sequence.size());
+	for(int i=0;i<sequence.size();i++){
+		seq[i] = sequence[i];
+	}
+	
 	}
 	
 vector<int8_t> Sequence_Fasta::fct_case_vector(vector<int8_t> prot,char c)
@@ -181,8 +187,8 @@ vector<int8_t> Sequence_Fasta::fct_case_vector(vector<int8_t> prot,char c)
 	
 }
 	//par principe on s'assure d'avoir un const
-vector<int8_t> Sequence_Fasta::getsequence() const
+uint8_t* Sequence_Fasta::getsequence() const
 	{
-		return sequence;
+		return seq;
 	}
 
