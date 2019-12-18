@@ -24,14 +24,14 @@ séquençage au score le plus haut. Effectivement, il y a
 plusieurs paramètres à prendre en compte non
 seulement au niveau des trous que l'on rajoute pour une 
 meilleure ressemblance et des extensions de ces trous
-mais aussi certains alignements d'acides aminés de valeur 
-plus élevés. Cet algorithme va alors s'aider d'une
+mais aussi certains alignements d'acides aminés de valeurs 
+plus élevées. Cet algorithme va alors s'aider d'une
 matrice dite "de score". Dans ce programme en particulier, 
 ce sera l'algorithme de Smith-Waterman qui sera utilisé. 
 Quant à la matrice de score, elle, sera la matrice
 BLOSUM62. Le 62 vient indiquer le pourcentage de 
 correspondance (ici de 62%). Il est tout à fait possible 
-d'imaginer de travailler sur une autre de matrice de score 
+d'imaginer travailler sur une autre de matrice de score 
 étant donné qu'elle se donne en paramètre dans un fichier 
 à part du programme.
 	Il existe d'ailleurs plus d'un paramètres: un fichier 
@@ -61,7 +61,7 @@ Contient les classes Fichier, Fichier_Fasta,
 Fichier_Sequence, Fichier_Index, Fichier_Header,
 Fichier_Blosum.
 
-Fichier : Contiet des fonctions générales aux fichiers
+Fichier : Contient des fonctions générales aux fichiers
 comme open ou close.
 
 Fichier_Fasta : Lis le fichier fasta passé en argument 1
