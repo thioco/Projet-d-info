@@ -1,0 +1,22 @@
+	Notre programme a pour objectif de séquencer de manière efficace une protéine et d'en donner un score
+de ressemblance par rapport à une base de données contenant un grand nombre de protéines connues. C'est un
+outil précieux pour les chercheurs qui s'intéressent aux propriétés de molécules inconnues.
+	Dans cette optique, le programme va être centré autour d'un algorithme qui va s'amuser à trouver le
+séquençage au score le plus haut. Effectivement, il y a plusieurs paramètres à prendre en compte non
+seulement au niveau des trous que l'on rajoute pour une meilleure ressemblance et des extensions de ces trous
+mais aussi certains alignements d'acides aminés de valeur plus élevés. Cet algorithme va alors s'aider d'une
+matrice dite "de score". Dans ce programme en particulier, ce sera l'algorithme de Gotoh, une version
+améliorée de celui de Smith-Waterman plus local, qui sera utilisé. Quant à la matrice de score, elle, sera
+la matrice BLOSUM62. Le 62 vient indiquer le pourcentage de correspondance (ici de 62%). Il est tout à fait
+possible d'imaginer de travailler sur une autre de matrice de score étant donné qu'elle se donne en
+paramètre dans un fichier à part du programme.
+	Il existe d'ailleurs plus d'un paramètres: un fichier dans le format FASTA contenant la séquence de 
+la protéine à travailler, un autre fichier qui reprend la database des protéines connues pour pouvoir faire la
+comparaison et deux autres paramètres pour les pénalités des trous rajoutés lors du séquençage, ces derniers 
+sont mis par défaut à 11 pour l'ouverture d'un trou et 1 pour son extension.
+	Le fichier FASTA sera partagé en trois sous-fichiers. Ils ont pour extension .pin, .psq et .phr. Les
+deux premiers contiendront l'index et la séquence tandis que le troisième héritera du header. On utilisera 
+principalement le .psq qui nous permettra de commencer le séquençage.
+	On effectue alors un "balayage" de la matrice des scores suivant l'algorithme en optant chaque fois
+pour la plus grande somme. Cette somme ainsi constituée donnera le score total et permettra ainsi d'évaluer 
+les taux de ressemblance entre les différentes molécules.
