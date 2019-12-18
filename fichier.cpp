@@ -11,7 +11,7 @@
 using namespace std;
 
 
-Fichier::Fichier(const char* fichier)
+Fichier::Fichier(const char* fichier) //constructeur de la classe mère
 	{
 		strcpy(name,fichier);
 	}
@@ -19,7 +19,8 @@ const char* Fichier::getname() const
 	{
 		return name;
 	}
-void Fichier::Open(int offset)
+//méthodes pour ouvrir et fermer les fichier, utilisé dans algo.cpp pour éviter de devoir ouvrir et refermer les fichiers dans les boucles for
+void Fichier::Open(int offset) 
 	{
 		in.open(name, ios::binary|ios::out);
 		in.seekg(offset);
@@ -56,7 +57,7 @@ void Fichier_head::getprotname(int offset)
 
 
 
-Fichier_index::Fichier_index(const char* fichier): Fichier(fichier)
+Fichier_index::Fichier_index(const char* fichier): Fichier(fichier) 
 	{
 		sprintf(name,"%s.pin",fichier);
 		in.open(name,ios::binary |ios::in);
@@ -64,20 +65,20 @@ Fichier_index::Fichier_index(const char* fichier): Fichier(fichier)
 		{
 			uint32_t x;
 			
-			in.ignore(8);
+			in.ignore(8); //on saute les infos sur le type et la version de la database
 			debut = 8;
-			in.read((char *) (&x), sizeof(x) );
+			in.read((char *) (&x), sizeof(x) ); //lis taille du titre
 			debut += 4+bswap_32((int32_t)x);
-			in.ignore(bswap_32((int32_t)x));
+			in.ignore(bswap_32((int32_t)x)); //saute le titre
 		
-			in.read((char *) (&x), sizeof(x) );
+			in.read((char *) (&x), sizeof(x) ); //lis taille de la "timestamp string"
 			debut += 4+bswap_32((int32_t)x);
-			in.ignore(bswap_32((int32_t)x));
+			in.ignore(bswap_32((int32_t)x)); //saute "timestamp string"
 		
-			in.read((char *) (&x), sizeof(x) );
+			in.read((char *) (&x), sizeof(x) ); //lis nombre de protéines dans la séquence et le stocke dans une variable
 			nbreprot =  bswap_32((int32_t) x );
 			
-			debut+= 16;
+			debut+= 16; //début est un offset qui va permettre d'aller directement dans le header et sequence offset table
 			in.close();
 		}
 	}
@@ -88,7 +89,7 @@ int Fichier_index::getseqoffset(int i)
 		if( in.is_open() )
 		{
 			uint32_t x;
-			in.seekg(debut+(i+1+nbreprot)*4);
+			in.seekg(debut+(i+1+nbreprot)*4); //va directement dans les tables et on saute la table des offset des header
 			in.read((char *) (&x), sizeof(x) );
 			in.close();
 			return bswap_32((int32_t) x);
@@ -102,7 +103,7 @@ int Fichier_index::getheadoffset(int i)
 		if( in.is_open() )
 		{
 			uint32_t x;
-			in.seekg(debut+(i)*4);//Si pas bon titre regardez ici
+			in.seekg(debut+(i)*4);//va directement dans la table header et saute le nombre nécessaire de protéines pour arriver à celle qui nous intéresse
 			in.read((char *) (&x), sizeof(x) );
 			in.close();
 			return bswap_32((int32_t) x );
@@ -115,7 +116,7 @@ int Fichier_index::getnbreprot() const
 		return nbreprot;
 	}
 	
-int Fichier_index::getsize(int i)
+int Fichier_index::getsize(int i) //fais différence entre offset de la protéine et du offset de la protéine qui suit pour connaitre la taille de celle qui nous intéresse
 	{
 		int begin, end;
 		in.open(name,ios::binary |ios::in);
@@ -142,7 +143,7 @@ Fichier_sequence::Fichier_sequence(const char* fichier): Fichier(fichier)
 	{
 		sprintf(name,"%s.psq",fichier);
 	}
-void Fichier_sequence::Read(int byte, uint8_t *var)
+void Fichier_sequence::Read(int byte, uint8_t *var) //lis caractère à l'offset qu'on a demandé
 	{
 		if( in.is_open() )
 		{
