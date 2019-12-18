@@ -19,12 +19,7 @@ Algorithme::Algorithme(Sequence_Fasta* f, Fichier_sequence* p,int g_o, int g_e,i
 			psq = p;
 			Q = g_o + g_e;
 			R = g_e;
-			//int** blosum; pas encore opérationnel	
-			/*if(B != NULL){
-				blosum = B;}
-			else{
-				
-			}*/
+			blosum = B;
 			
 		} 
 	
@@ -83,7 +78,7 @@ void Algorithme::SW_Gotoh_SWIPE(Sequence_Blast* blast){
 				if(i == 0 || j == 0) //Si les conditions ne sont pas respectées
 					H[j] = 0;
 				else
-					H[j] = max(H_prec + blosum62[indices_blosum((int) prot)][indices_blosum((fasta->getsequence())[i])],F,E[j],0);
+					H[j] = max(H_prec + blosum[indices_blosum((int) prot)][indices_blosum((fasta->getsequence())[i])],F,E[j],0);
 				/* }}}}}} */
 				
 				H_prec = temp_var;

@@ -8,6 +8,7 @@
 #include <time.h>
 
 #include "algo.h"
+#include "blosum.h"
 //commentaire useless
 using namespace std;
 
@@ -54,12 +55,14 @@ int main(int argc, char **argv)
 			}
 			else if(!strcmp(argv[arg],"-blosum")){
 				if(argc > arg+1){
-					/* PAS ENCORE OPERATIONNEL ATTENDRE LA MISE EN FORME SOUS .h
-					 * Fichier_Blosum* f_b = new(argv[arg+1]);
-					 * BLOSUM = f_b->read();
-					 * f_b->destrcutor();
-					 */
-					cout <<" ";
+					Fichier_Blosum* f_b = new Fichier_Blosum(argv[arg+1]);
+					BLOSUM = f_b->read();
+					free(f_b);
+					if(BLOSUM == NULL){
+						cout << "Vérifiez votre fichier BLOSUM." << endl;
+						return 3;
+					}
+					
 					arg++;}
 				else{
 					cout << "Chemin de la BLOSUM manquante." << endl;
@@ -67,7 +70,7 @@ int main(int argc, char **argv)
 			}
 			else{
 				cout << "Veuillez consulter le README pour ajouter des options." << endl;
-				return -2;
+				return 2;
 			}
 		}
 	}
@@ -75,6 +78,18 @@ int main(int argc, char **argv)
 	
 	/* {{{---- Chronomètre---*/
 	clock_t tStart = clock();
+	/* }}}}}*/
+	
+	/* {{{{----- Création de la matrice BLOSUM----*/
+	if(BLOSUM == NULL){
+		Fichier_Blosum* f_b = new Fichier_Blosum("BLOSUM62");
+		BLOSUM = f_b->read();
+		free(f_b);
+		if(BLOSUM == NULL){
+			cout << "Vérifiez le fichier BLOSUM62." << endl;
+			return 3;
+		}
+	}
 	/* }}}}}*/
 	
 	/*{{{{-----Création des classes-----*/	

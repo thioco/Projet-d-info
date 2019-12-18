@@ -1,66 +1,62 @@
-class Fichier_Blosum
-{
-	private:
-		ifstream f;
-		char* path;
-		
-		void Open();
-		void Close();
-		
-		void readC(char* C);
-		void readS(char* S);
+#include <iostream>
+#include <cstdio>
+#include <fstream>
+#include <byteswap.h>
+#include <vector>
+#include <tuple>
+#include <string.h>
+#include <string>
 
-	public:
-		Fichier_Blosum(char* file_path);
-		int** read();
-		void destructor();
-};
+
+#include "blosum.h"
+
+using namespace std;
 
 Fichier_Blosum::Fichier_Blosum(char* file_path){
-	path = malloc(sizeof(char)*strlen(file_path));
+	//path = (char*) malloc(sizeof(char)*strlen(file_path));
 	strcpy(path,file_path);
 }
 
 
-void Fichier_Blosum::fOpen(){
+int Fichier_Blosum::fOpen(){
 	f.open(path);
 	if(!f.is_open()){
 		cout << "Impossible d'ouvrir le fichier, vérifiez que celui ne comporte pas d'espace." << endl;
+		return 1;
 	}
+	return 0;
 }
 
 void Fichier_Blosum::fClose(){
 	f.close();
 }
 
-void Fichier_Blosum::destructor(){
-	free(path);
-	free(this);
-}
-
-void Fichie_Blosum::readC(char* C){
-	if(f.is_open()){
-		*C = f.get();
-	}
-}
-
 void Fichier_Blosum::readS(){
-	char* s;
+	string s;
 	if(f.is_open()){
 		getline(f,s);
 	}
 }
 
 int** Fichier_Blosum::read(){
-	int** b = malloc(malloc(sizeof(int)*23)*23);
-	char c;
-	char* str[3]; //pas besoin d'une taille énorme
+	int** b = (int**) malloc(sizeof(int)*23);
+	for(int x=0;x<23;x++)
+		b[x] = (int*) malloc(sizeof(int)*23);
 	
-	fOpen();
+	
+	
+	string c = "";
+	string str = ""; //pas besoin d'une taille énorme
+	
+	if(fOpen() == 1){
+		return NULL;
+	}
 	
 	if(f.is_open()){
-		while(readC(&c) == '#'){
+		f >> c;
+		while(c.compare("#") == 0){
 			readS();
+			f >> c;
 		}
 	
 		readS(); //On saute la ligne des lettres
@@ -69,7 +65,7 @@ int** Fichier_Blosum::read(){
 			f >> str; //On s'enfout des lettres
 			for(int j=0;j<23;j++){
 				f >> str;
-				b[i][j] = atoi(str);
+				b[i][j] = atoi(str.c_str());
 			}
 			f >> str; //Dernière colonne inutile
 		}
