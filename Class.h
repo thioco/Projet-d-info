@@ -5,7 +5,6 @@
 #include <vector>
 #include <tuple>
 
-
 using namespace std;
 
 class Fichier
@@ -75,17 +74,5 @@ public:
 	int getpsqoff();
 	int gethdroff();
 	int getscore();
-};
-
-class Algorithme
-{
-	class Sequence_Fasta* fasta;
-	class Fichier_sequence* psq;
-	class Sequence_Blast* blast;
-	int max(int a,int b,int c=0,int d=0);
-	int indices_blosum(uint8_t a);
-public:
-	Algorithme(Sequence_Fasta* fasta,Fichier_sequence* psq);
-	void SW_Gotoh_SWIPE(Sequence_Blast* blast);
 };
 
