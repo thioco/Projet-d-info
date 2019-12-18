@@ -3,6 +3,28 @@ COURBOIN Samuel Biomédical
 LOSFELD Armand Informatique
 HIOCO Tomasso Informatique
 
+================= Lancer le programme =====================
+Tout d'abord il vous faut le compiler avec la commande
+"make" dans un terminal lancé depuis le dossier.
+Ensuite dans le même terminal, rentrez la commande :
+./main sequence_a_analyser.fasta database.fasta [-gap_open i]
+[-gap_ext i] [-blosum i]
+
+2 paramètres sont requis : 
+	- Le chemin relatif/absolu du la protéine à analyser/comparer
+	- Le chemin relatif/absolu de la database
+	
+3 options : 
+	-gap_open i : pour changer la valeur du gap_open
+	(voir définiton ci-dessus)
+	-gap_ext i : pour changer la valeur du gap_extension
+	(voir défintion ci-dessus)
+	-blosum i : pour changer le chemin du fichier BLOSUM
+	à utiliser pour l'algortihme
+	
+Remarque : Il faut impérativement le fichier BLOSUM62 (fourni) dans
+le dossier se trouvant le code si l'option -blosum n'est pas activé.
+
 ================= Description ========================
 Voici un code reprenant l'algorithme Smith-Waterman
 pour obtenir un alignement optimal local.
@@ -51,26 +73,4 @@ suivant l'algorithme en optant chaque fois pour la plus grande
 somme. Cette somme ainsi constituée donnera le score total et 
 permettra ainsi d'évaluer les taux de ressemblance entre les 
 différentes molécules.
-
-
-=============== Fichier.cpp/.h =======================
-Permet de faire toutes les opérations sur les fichiers
-que le code a besoin.
-
-Contient les classes Fichier, Fichier_Fasta,
-Fichier_Sequence, Fichier_Index, Fichier_Header,
-Fichier_Blosum.
-
-Fichier : Contient des fonctions générales aux fichiers
-comme open ou close.
-
-Fichier_Fasta : Lis le fichier fasta passé en argument 1
-et traduit les caractères en byte dans une matrice.
-Hérite de la classe Fichier.
-
-Fichier_Sequence : Lis les bytes dans le fichier .fasta.psq.
-Hérite de la classe Fichier
-
-Fichier_Index : Lis les informations utiles comme le
-nombre de séquences et les offset dans le fichier 
-.fasta.pin .
+=============================================================
