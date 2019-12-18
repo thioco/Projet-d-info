@@ -150,5 +150,11 @@ void Fichier_sequence::Read(int byte, uint8_t *var) //lis caractère à l'offset
 			in.read((char *) (var), sizeof(char)*byte);
 		}
 	}
+
+void Fichier_sequence::pos(int offset){
+	if(in.is_open()){
+		in.seekg(offset);
+	}
+}
 	
 

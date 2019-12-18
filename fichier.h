@@ -69,6 +69,8 @@ class Fichier_sequence: public Fichier
 		Fichier_sequence(const char* fichier = 0);//: Fichier(fichier);
 		//Permet tout simplement de lire les bytes dans le fichier .psq
 		void Read(int byte, uint8_t *var);
+		//Repositionner où l'on veut
+		void pos(int offset);
 };
 
 #endif

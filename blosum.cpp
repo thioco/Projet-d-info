@@ -12,12 +12,12 @@
 
 using namespace std;
 
+//Constructeur
 Fichier_Blosum::Fichier_Blosum(char* file_path){
-	//path = (char*) malloc(sizeof(char)*strlen(file_path));
 	strcpy(path,file_path);
 }
 
-
+//Ouvre le fichier avec comme chemin path et retourne un code d'erreur
 int Fichier_Blosum::fOpen(){
 	f.open(path);
 	if(!f.is_open()){
@@ -27,10 +27,12 @@ int Fichier_Blosum::fOpen(){
 	return 0;
 }
 
+//ferme le fichier
 void Fichier_Blosum::fClose(){
 	f.close();
 }
 
+//Lis une ligne entière
 void Fichier_Blosum::readS(){
 	string s;
 	if(f.is_open()){
@@ -38,21 +40,24 @@ void Fichier_Blosum::readS(){
 	}
 }
 
+//Lis le fichier Blosum en entier
 int** Fichier_Blosum::read(){
+	//Les BLOSUM sont des matrices de taille 23x23, on alloue dynamiquement cette matrice 
 	int** b = (int**) malloc(sizeof(int)*23);
 	for(int x=0;x<23;x++)
 		b[x] = (int*) malloc(sizeof(int)*23);
 	
 	
-	
+	//Variable qui vont nous servir à lire
 	string c = "";
-	string str = ""; //pas besoin d'une taille énorme
+	string str = ""; 
 	
 	if(fOpen() == 1){
 		return NULL;
 	}
 	
 	if(f.is_open()){
+		//Si le premier charactère de la ligne est un commentaire, on passe à la ligne suivante
 		f >> c;
 		while(c.compare("#") == 0){
 			readS();

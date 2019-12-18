@@ -8,11 +8,10 @@
 
 
 #include "algo.h"
-//commentaire useless
 
 using namespace std;
 
-
+//Constructeur : 
 Algorithme::Algorithme(Sequence_Fasta* f, Fichier_sequence* p,int g_o, int g_e,int** B)
 		{
 			fasta = f;
@@ -23,10 +22,12 @@ Algorithme::Algorithme(Sequence_Fasta* f, Fichier_sequence* p,int g_o, int g_e,i
 			
 		} 
 	
-	
+/*	L'algorithme Smith-Waterman 
+ * 	Amélioré par Gotoh : récurrence démontré dans son article pour obtenir un cout en O(n.m); Seulement 2 matrices de taille 1xm (m nombre de lignes/colonnes) et une variable 
+ * 	Amélioré par SWIPE : dans l'article, la récurrence de Smith-Waterman avec les améliorations de Gotoh y étaient présentées
+ */
 void Algorithme::SW_Gotoh_SWIPE(Sequence_Blast* blast){
 		//Matrice de score et de gap
-		//vector<int> H;
 		int* H;
 		int* E;
 		int F = 0;
@@ -42,14 +43,18 @@ void Algorithme::SW_Gotoh_SWIPE(Sequence_Blast* blast){
 		int temp_var=0;
 		int H_prec=0;
 		
-		//Variable de score local et de meilleur score global aisni que ses coordonnées
+		//Variable du meilleur score local
 		int best_score=0;
 		
+		//Variable permettant de lire dans le fichier blast
 		uint8_t prot;
-		//cout << "Offset psq=" << blast->getpsqoff() << endl;
 		
 		for (int i=0;i<fasta->getprot_len();i++){
-			psq->Open(blast->getpsqoff());
+			//On ouvre le fichier pour chaque nouvelle prot du fasta car on veut se repositionner au début.
+			//psq->Open(blast->getpsqoff());
+			
+			//Repositionnement dans le psq pour chaque nouvelle protéine du fasta
+			psq->pos(blast->getpsqoff());
 			for(int j=0;j<blast->getprot_len();j++){
 				
 				psq->Read(sizeof(uint8_t),&prot);
@@ -66,6 +71,7 @@ void Algorithme::SW_Gotoh_SWIPE(Sequence_Blast* blast){
 					F = max(H[j] - Q,E[j] - R);
 				/* }}}}}}}} */
 				
+				//On sauvegarde la valeur qui va être supprimée
 				temp_var = H[j];
 
 				/* {{{{{---- Matrice de score ---- */
@@ -75,21 +81,26 @@ void Algorithme::SW_Gotoh_SWIPE(Sequence_Blast* blast){
 					H[j] = max(H_prec + blosum[indices_blosum((int) prot)][indices_blosum((fasta->getsequence())[i])],F,E[j],0);
 				/* }}}}}} */
 				
+				//On stocke l'ancienne valeur pour ne pas la perdre
 				H_prec = temp_var;
 				
+				//Si on a un meilleur score 
 				if (best_score < H[j]){
 					best_score = H[j];
 				}	
 			}
-			psq->Close();
+			//On ferme le fichier pour se repositionner
+			//psq->Close();
 		}
+		//On ferme le fichier
 		psq->Close();
+		//On update le score maximal local de la séquence blast
 		blast->update_score(best_score);
 	}
 	
 
 	
-	
+//Une fonction permettant de choisir un maximum parmis 4 cas
 int Algorithme::max(int a,int b,int c,int d){
 		if(a>=b && a>=c && a>=d){ //On priviligie un cas 
 			return a;}
@@ -102,7 +113,8 @@ int Algorithme::max(int a,int b,int c,int d){
 		}
 		return 0; //Si erreur; return 0;
 	}
-	
+
+//Traduction des entiers du .psq dans l'ordre des indices de la BLOSUM
 int Algorithme::indices_blosum(uint8_t a){
 		int res;
 		switch(a){
