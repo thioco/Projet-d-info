@@ -51,10 +51,7 @@ void Algorithme::SW_Gotoh_SWIPE(Sequence_Blast* blast){
 		
 		for (int i=0;i<fasta->getprot_len();i++){
 			//On ouvre le fichier pour chaque nouvelle prot du fasta car on veut se repositionner au début.
-			//psq->Open(blast->getpsqoff());
-			
-			//Repositionnement dans le psq pour chaque nouvelle protéine du fasta
-			psq->pos(blast->getpsqoff());
+			psq->Open(blast->getpsqoff());
 			for(int j=0;j<blast->getprot_len();j++){
 				
 				psq->Read(sizeof(uint8_t),&prot);
@@ -90,7 +87,7 @@ void Algorithme::SW_Gotoh_SWIPE(Sequence_Blast* blast){
 				}	
 			}
 			//On ferme le fichier pour se repositionner
-			//psq->Close();
+			psq->Close();
 		}
 		//On ferme le fichier
 		psq->Close();
