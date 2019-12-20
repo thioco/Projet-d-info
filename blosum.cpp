@@ -6,6 +6,7 @@
 #include <tuple>
 #include <string.h>
 #include <string>
+#include <string>
 
 
 #include "blosum.h"
@@ -43,9 +44,12 @@ void Fichier_Blosum::readS(){
 //Lis le fichier Blosum en entier
 int** Fichier_Blosum::read(){
 	//Les BLOSUM sont des matrices de taille 23x23, on alloue dynamiquement cette matrice 
-	int** b = (int**) malloc(sizeof(int)*23);
+	//int** b = (int**) malloc(sizeof(int)*23);
+	int**b;
+	b = new int*[23];
 	for(int x=0;x<23;x++)
-		b[x] = (int*) malloc(sizeof(int)*23);
+		b[x] = new int[23];
+		//b[x] = (int*) malloc(sizeof(int)*23);
 	
 	
 	//Variable qui vont nous servir à lire
